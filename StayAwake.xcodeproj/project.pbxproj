@@ -1,0 +1,239 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+	93D1E6D0A60D4C85B9BC7EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303F5C0D073B41A890920462 /* AppDelegate.swift */; };
+	47AA3395AB304AFB979A548F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC89E551AA3C44B48DA06133 /* SettingsView.swift */; };
+	15AC299E51E54075BCA1E3CF /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B182B5F111944BFEBEA22926 /* SettingsWindowController.swift */; };
+	A45DAA325A244C778FC28639 /* StayAwakeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482408E7A26840B7825227E6 /* StayAwakeApp.swift */; };
+	37E64A7B7E7F4392BAD14007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 899B8FA06B17400EAE9213C4 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+	15B776DC8FB34C50A4118009 /* StayAwake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StayAwake.app; sourceTree = BUILT_PRODUCTS_DIR; };
+	303F5C0D073B41A890920462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+	01DAF97F7AB64E99BEC19B51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+	DC89E551AA3C44B48DA06133 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+	B182B5F111944BFEBEA22926 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+	4B6324D0EE714A9192EFE658 /* StayAwake.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StayAwake.entitlements; sourceTree = "<group>"; };
+	482408E7A26840B7825227E6 /* StayAwakeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StayAwakeApp.swift; sourceTree = "<group>"; };
+	899B8FA06B17400EAE9213C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+	77FB72AFEF6448339C8F8D46 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+	7E32843858F74CBD88CD3E65 = {
+		isa = PBXGroup;
+		children = (
+			C42A0BD1FF5E4C6EB91ABA78 /* StayAwake */,
+			543DADA76DF449FFB2087A30 /* Products */,
+		);
+		sourceTree = "<group>";
+	};
+	543DADA76DF449FFB2087A30 /* Products */ = {
+		isa = PBXGroup;
+		children = (
+			15B776DC8FB34C50A4118009 /* StayAwake.app */,
+		);
+		name = Products;
+		sourceTree = "<group>";
+	};
+	C42A0BD1FF5E4C6EB91ABA78 /* StayAwake */ = {
+		isa = PBXGroup;
+		children = (
+			303F5C0D073B41A890920462 /* AppDelegate.swift */,
+			01DAF97F7AB64E99BEC19B51 /* Info.plist */,
+			DC89E551AA3C44B48DA06133 /* SettingsView.swift */,
+			B182B5F111944BFEBEA22926 /* SettingsWindowController.swift */,
+			4B6324D0EE714A9192EFE658 /* StayAwake.entitlements */,
+			482408E7A26840B7825227E6 /* StayAwakeApp.swift */,
+			899B8FA06B17400EAE9213C4 /* Assets.xcassets */,
+		);
+		path = StayAwake;
+		sourceTree = SOURCE_ROOT;
+	};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+	D690DA3F68074E27A7B28644 /* StayAwake */ = {
+		isa = PBXNativeTarget;
+		buildConfigurationList = 547B94225A1C49F1ADA3CC53 /* Build configuration list for PBXNativeTarget "StayAwake" */;
+		buildPhases = (
+			5CF398055E2B4ED9ABAAB81F /* Sources */,
+			77FB72AFEF6448339C8F8D46 /* Frameworks */,
+			7796C93A82C34C0686096AC4 /* Resources */,
+		);
+		buildRules = (
+		);
+		dependencies = (
+		);
+		name = StayAwake;
+		productName = StayAwake;
+		productReference = 15B776DC8FB34C50A4118009 /* StayAwake.app */;
+		productType = "com.apple.product-type.application";
+	};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+	DB305E841D2240C48ED219DF /* Project object */ = {
+		isa = PBXProject;
+		buildConfigurationList = 2B0D788FD7DF4D658EE867C6 /* Build configuration list for PBXProject "StayAwake" */;
+		compatibilityVersion = "Xcode 16.0";
+		developmentRegion = en;
+		hasScannedForEncodings = 0;
+		knownRegions = (
+			en,
+			Base,
+		);
+		mainGroup = 7E32843858F74CBD88CD3E65;
+		productRefGroup = 543DADA76DF449FFB2087A30 /* Products */;
+		projectDirPath = "";
+		projectRoot = "";
+		targets = (
+			D690DA3F68074E27A7B28644 /* StayAwake */,
+		);
+	};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+	7796C93A82C34C0686096AC4 /* Resources */ = {
+		isa = PBXResourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			37E64A7B7E7F4392BAD14007 /* Assets.xcassets in Resources */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+	5CF398055E2B4ED9ABAAB81F /* Sources */ = {
+		isa = PBXSourcesBuildPhase;
+		buildActionMask = 2147483647;
+		files = (
+			93D1E6D0A60D4C85B9BC7EC3 /* AppDelegate.swift in Sources */,
+			47AA3395AB304AFB979A548F /* SettingsView.swift in Sources */,
+			15AC299E51E54075BCA1E3CF /* SettingsWindowController.swift in Sources */,
+			A45DAA325A244C778FC28639 /* StayAwakeApp.swift in Sources */,
+		);
+		runOnlyForDeploymentPostprocessing = 0;
+	};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+	9D624F76ABE8463A8FE0CA63 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+			ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+			CLANG_ANALYZER_NONNULL = YES;
+			CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+			CLANG_ENABLE_MODULES = YES;
+			COPY_PHASE_STRIP = NO;
+			ENABLE_USER_SCRIPT_SANDBOXING = NO;
+			GCC_DYNAMIC_NO_PIC = NO;
+			GCC_OPTIMIZATION_LEVEL = 0;
+			GCC_PREPROCESSOR_DEFINITIONS = ( "DEBUG=1", "$(inherited)", );
+			LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+			MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+			MTL_FAST_MATH = YES;
+			ONLY_ACTIVE_ARCH = YES;
+			SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+			SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+		};
+		name = Debug;
+	};
+	1C8AA4848BB049BAA721F200 /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+			ALWAYS_SEARCH_USER_PATHS = NO;
+			ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+			CLANG_ANALYZER_NONNULL = YES;
+			CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+			CLANG_ENABLE_MODULES = YES;
+			COPY_PHASE_STRIP = NO;
+			ENABLE_USER_SCRIPT_SANDBOXING = NO;
+			LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+			MTL_FAST_MATH = YES;
+			SWIFT_COMPILATION_MODE = wholemodule;
+		};
+		name = Release;
+	};
+	E8B53F3B3271442C86B8F517 /* Debug */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+			ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+			ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+			CODE_SIGN_ENTITLEMENTS = StayAwake/StayAwake.entitlements;
+			CODE_SIGN_STYLE = Automatic;
+			ENABLE_HARDENED_RUNTIME = YES;
+			ENABLE_PREVIEWS = NO;
+			GENERATE_INFOPLIST_FILE = NO;
+			INFOPLIST_FILE = StayAwake/Info.plist;
+			INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+			LD_RUNPATH_SEARCH_PATHS = ( "$(inherited)", "@executable_path/../Frameworks" );
+			MACOSX_DEPLOYMENT_TARGET = 13.0;
+			MARKETING_VERSION = 1.0.0;
+			PRODUCT_BUNDLE_IDENTIFIER = ca.analyse-design.StayAwake;
+			PRODUCT_NAME = "$(TARGET_NAME)";
+			SWIFT_EMIT_LOC_STRINGS = YES;
+			SWIFT_VERSION = 5.0;
+		};
+		name = Debug;
+	};
+	567DAC17C63A4572902584AA /* Release */ = {
+		isa = XCBuildConfiguration;
+		buildSettings = {
+			ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+			ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+			CODE_SIGN_ENTITLEMENTS = StayAwake/StayAwake.entitlements;
+			CODE_SIGN_STYLE = Automatic;
+			ENABLE_HARDENED_RUNTIME = YES;
+			ENABLE_PREVIEWS = NO;
+			GENERATE_INFOPLIST_FILE = NO;
+			INFOPLIST_FILE = StayAwake/Info.plist;
+			INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+			LD_RUNPATH_SEARCH_PATHS = ( "$(inherited)", "@executable_path/../Frameworks" );
+			MACOSX_DEPLOYMENT_TARGET = 13.0;
+			MARKETING_VERSION = 1.0.0;
+			PRODUCT_BUNDLE_IDENTIFIER = ca.analyse-design.StayAwake;
+			PRODUCT_NAME = "$(TARGET_NAME)";
+			SWIFT_EMIT_LOC_STRINGS = YES;
+			SWIFT_VERSION = 5.0;
+		};
+		name = Release;
+	};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+	547B94225A1C49F1ADA3CC53 /* Build configuration list for PBXNativeTarget "StayAwake" */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			E8B53F3B3271442C86B8F517 /* Debug */,
+			567DAC17C63A4572902584AA /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+	2B0D788FD7DF4D658EE867C6 /* Build configuration list for PBXProject "StayAwake" */ = {
+		isa = XCConfigurationList;
+		buildConfigurations = (
+			9D624F76ABE8463A8FE0CA63 /* Debug */,
+			1C8AA4848BB049BAA721F200 /* Release */,
+		);
+		defaultConfigurationIsVisible = 0;
+		defaultConfigurationName = Release;
+	};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = DB305E841D2240C48ED219DF /* Project object */;
+}
