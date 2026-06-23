@@ -195,17 +195,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     private func checkBatteryIfUnlimited() {
         guard isActive, !autoDisableEnabled else { return }
-        guard ProcessInfo.processInfo.isLowPowerModeEnabled else { return }
 
-        showNotification(
-            title: "StayAwake est illimité en mode économie d'énergie",
-            body: "Connectez votre Mac à l'alimentation ou désactivez StayAwake pour économiser la batterie."
-        )
+        if #available(macOS 12.0, *) {
+            guard ProcessInfo.processInfo.isLowPowerModeEnabled else { return }
+            showNotification(
+                title: "StayAwake est illimité en mode économie d'énergie",
+                body: "Connectez votre Mac à l'alimentation ou désactivez StayAwake pour économiser la batterie."
+            )
+        } else {
+            // On older macOS versions, warn once when unlimited mode is activated
+            showNotification(
+                title: "StayAwake est illimité",
+                body: "Pensez à désactiver StayAwake pour économiser la batterie."
+            )
+        }
     }
 
     private func isBatteryLikelyOnPower() -> Bool {
-        // Proxy: low power mode strongly suggests running on battery
-        return !ProcessInfo.processInfo.isLowPowerModeEnabled
+        if #available(macOS 12.0, *) {
+            return !ProcessInfo.processInfo.isLowPowerModeEnabled
+        }
+        return true
     }
 
     // MARK: - Notifications
