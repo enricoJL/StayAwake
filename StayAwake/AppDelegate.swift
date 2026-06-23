@@ -2,7 +2,7 @@ import Cocoa
 import UserNotifications
 import ServiceManagement
 import Combine
-import IOKit
+import IOKit.pwr_mgt
 
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     private var statusItem: NSStatusItem!
@@ -70,7 +70,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         updateTrayIcon()
         scheduleReminder()
         startBatteryMonitoringIfUnlimited()
-        showNotification(title: "StayAwake activé", body: "Votre Mac restera éveillé.")
+        let activationBody = autoDisableEnabled
+            ? "Votre Mac restera éveillé pendant \(Int(reminderMinutes)) minutes."
+            : "Votre Mac restera éveillé."
+        showNotification(title: "StayAwake activé", body: activationBody)
     }
 
     private func deactivate() {
