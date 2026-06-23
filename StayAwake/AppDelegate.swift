@@ -16,8 +16,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     private let reminderMinutesKey = "reminderMinutes"
     private let autoStartKey = "launchAtLogin"
 
+    /// 0 means unlimited (no auto-disable)
     private var reminderMinutes: Double {
         defaults.double(forKey: reminderMinutesKey) == 0 ? 60 : defaults.double(forKey: reminderMinutesKey)
+    }
+
+    private var autoDisableEnabled: Bool {
+        defaults.double(forKey: reminderMinutesKey) != 0
     }
 
     private var isActive = false
@@ -26,15 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         NSApp.setActivationPolicy(.accessory)
 
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { [weak self] granted, _ in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                guard granted else { return }
-                self?.showNotification(
-                    title: "StayAwake est désactivé",
-                    body: "Cliquez sur l'icône dans la barre de menu pour empêcher la veille."
-                )
-            }
-        }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.button?.target = self
@@ -44,6 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         updateTrayIcon()
         syncLoginItem()
         observeDefaults()
+        observePowerSource()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -73,6 +71,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         updateTrayIcon()
         scheduleReminder()
         showNotification(title: "StayAwake activé", body: "Votre Mac restera éveillé.")
+        checkBatteryIfUnlimited()
     }
 
     private func deactivate() {
@@ -116,7 +115,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
         menu.addItem(NSMenuItem.separator())
 
-        let reminderItem = NSMenuItem(title: "Rappel après : \(Int(reminderMinutes)) min", action: nil, keyEquivalent: "")
+        let reminderLabel: String
+        if autoDisableEnabled {
+            reminderLabel = "Se désactive automatiquement après : \(Int(reminderMinutes)) min"
+        } else {
+            reminderLabel = "Mode illimité (pas de désactivation automatique)"
+        }
+        let reminderItem = NSMenuItem(title: reminderLabel, action: nil, keyEquivalent: "")
         reminderItem.isEnabled = false
         menu.addItem(reminderItem)
 
@@ -154,14 +159,57 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     private func scheduleReminder() {
         reminderTimer?.invalidate()
+
+        guard autoDisableEnabled else { return }
+
         let interval = reminderMinutes * 60
         reminderTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
             guard let self = self, self.isActive else { return }
             self.showNotification(
-                title: "StayAwake est toujours actif",
+                title: "StayAwake s'est désactivé automatiquement",
                 body: "La veille est bloquée depuis \(Int(self.reminderMinutes)) minutes."
             )
+            self.deactivate()
         }
+    }
+
+    // MARK: - Alimentation / batterie
+
+    private func observePowerSource() {
+        // Notify on AC/battery transitions
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(powerSourceChanged),
+            name: NSNotification.Name.NSProcessInfoPowerStateDidChange,
+            object: nil
+        )
+    }
+
+    @objc private func powerSourceChanged() {
+        DispatchQueue.main.async { [weak self] in
+            self?.checkBatteryIfUnlimited()
+        }
+    }
+
+    private func checkBatteryIfUnlimited() {
+        guard isActive, !autoDisableEnabled else { return }
+        guard !isOnACPower() else { return }
+
+        showNotification(
+            title: "StayAwake est illimité sur batterie",
+            body: "Connectez votre Mac à l'alimentation ou désactivez StayAwake pour économiser la batterie."
+        )
+    }
+
+    private func isOnACPower() -> Bool {
+        let psInfo = IOPSCopyPowerSourcesInfo()?.takeRetainedValue()
+        guard let sources = IOPSCopyPowerSourcesList(psInfo)?.takeRetainedValue() as? [CFTypeRef],
+              let firstSource = sources.first else { return true }
+
+        guard let description = IOPSGetPowerSourceDescription(psInfo, firstSource)?.takeUnretainedValue() as? [String: Any],
+              let powerSourceState = description[kIOPSPowerSourceStateKey] as? String else { return true }
+
+        return powerSourceState == kIOPSACPowerValue
     }
 
     // MARK: - Notifications
@@ -193,7 +241,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
             .debounce(for: .milliseconds(200), scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if self.isActive { self.scheduleReminder() }
+                if self.isActive {
+                    self.scheduleReminder()
+                    self.checkBatteryIfUnlimited()
+                }
                 self.syncLoginItem()
             }
             .store(in: &cancellables)
