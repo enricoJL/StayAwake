@@ -2,7 +2,7 @@ import Cocoa
 import UserNotifications
 import ServiceManagement
 import Combine
-import IOKit
+import IOKit.pwr_mgt
 
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     private var statusItem: NSStatusItem!
@@ -41,7 +41,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         updateTrayIcon()
         syncLoginItem()
         observeDefaults()
-        observePowerSource()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -70,8 +69,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         startTime = Date()
         updateTrayIcon()
         scheduleReminder()
+        startBatteryMonitoringIfUnlimited()
         showNotification(title: "StayAwake activé", body: "Votre Mac restera éveillé.")
-        checkBatteryIfUnlimited()
     }
 
     private func deactivate() {
@@ -83,6 +82,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         startTime = nil
         reminderTimer?.invalidate()
         reminderTimer = nil
+        stopBatteryMonitoring()
         updateTrayIcon()
         showNotification(title: "StayAwake désactivé", body: "Votre Mac peut maintenant se mettre en veille.")
     }
@@ -175,41 +175,37 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 
     // MARK: - Alimentation / batterie
 
-    private func observePowerSource() {
-        // Notify on AC/battery transitions
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(powerSourceChanged),
-            name: NSNotification.Name.NSProcessInfoPowerStateDidChange,
-            object: nil
-        )
-    }
+    private var batteryCheckTimer: Timer?
 
-    @objc private func powerSourceChanged() {
-        DispatchQueue.main.async { [weak self] in
+    private func startBatteryMonitoringIfUnlimited() {
+        batteryCheckTimer?.invalidate()
+        guard isActive, !autoDisableEnabled else { return }
+
+        checkBatteryIfUnlimited()
+
+        batteryCheckTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
             self?.checkBatteryIfUnlimited()
         }
     }
 
+    private func stopBatteryMonitoring() {
+        batteryCheckTimer?.invalidate()
+        batteryCheckTimer = nil
+    }
+
     private func checkBatteryIfUnlimited() {
         guard isActive, !autoDisableEnabled else { return }
-        guard !isOnACPower() else { return }
+        guard ProcessInfo.processInfo.isLowPowerModeEnabled else { return }
 
         showNotification(
-            title: "StayAwake est illimité sur batterie",
+            title: "StayAwake est illimité en mode économie d'énergie",
             body: "Connectez votre Mac à l'alimentation ou désactivez StayAwake pour économiser la batterie."
         )
     }
 
-    private func isOnACPower() -> Bool {
-        let psInfo = IOPSCopyPowerSourcesInfo()?.takeRetainedValue()
-        guard let sources = IOPSCopyPowerSourcesList(psInfo)?.takeRetainedValue() as? [CFTypeRef],
-              let firstSource = sources.first else { return true }
-
-        guard let description = IOPSGetPowerSourceDescription(psInfo, firstSource)?.takeUnretainedValue() as? [String: Any],
-              let powerSourceState = description[kIOPSPowerSourceStateKey] as? String else { return true }
-
-        return powerSourceState == kIOPSACPowerValue
+    private func isBatteryLikelyOnPower() -> Bool {
+        // Proxy: low power mode strongly suggests running on battery
+        return !ProcessInfo.processInfo.isLowPowerModeEnabled
     }
 
     // MARK: - Notifications
@@ -243,7 +239,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
                 guard let self = self else { return }
                 if self.isActive {
                     self.scheduleReminder()
-                    self.checkBatteryIfUnlimited()
+                    self.startBatteryMonitoringIfUnlimited()
                 }
                 self.syncLoginItem()
             }
