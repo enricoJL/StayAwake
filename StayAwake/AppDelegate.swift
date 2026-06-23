@@ -2,7 +2,7 @@ import Cocoa
 import UserNotifications
 import ServiceManagement
 import Combine
-import IOKit.pwr_mgt
+import IOKit
 
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
     private var statusItem: NSStatusItem!
